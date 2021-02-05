@@ -1,3 +1,10 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               10.3.16-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             10.2.0.5599
+-- --------------------------------------------------------
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!50503 SET NAMES utf8mb4 */;
@@ -22,9 +29,9 @@ CREATE TABLE IF NOT EXISTS `estaciones` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
--- Dumping data for table data.estaciones: ~3 rows (approximately)
+-- Dumping data for table data.estaciones: ~19 rows (approximately)
 /*!40000 ALTER TABLE `estaciones` DISABLE KEYS */;
-REPLACE INTO `estaciones` (`id`, `nombre`, `telefono`, `direccion`, `latitud`, `longitud`) VALUES
+INSERT INTO `estaciones` (`id`, `nombre`, `telefono`, `direccion`, `latitud`, `longitud`) VALUES
 	(1, 'EDS SAN FERNANDO', NULL, 'Riofrío-Trujllo #3 Oeste-2 a 3 Oeste-250,, Tuluá, ', 4.0876647, -76.2154859),
 	(2, 'Gasolinera ESSO', 573226641837, 'a 29-104,, Cl. 18 #292, Tuluá, Valle del Cauca', 4.0898523, -76.1916115),
 	(3, 'ESSO', 5722249998, 'Cra. 20 #27a-28, Tuluá, Valle del Cauca', 4.0844881, -76.2019656),
@@ -43,8 +50,27 @@ REPLACE INTO `estaciones` (`id`, `nombre`, `telefono`, `direccion`, `latitud`, `
 	(16, 'Estacion De Servicio Terpel Entre Rios', NULL, 'Cra. 30 #163, Tuluá, Valle del Cauca', 4.0908609, -76.1900139),
 	(17, 'Estación de Servicio Tuluá', NULL, 'Cl. 34 #3177, Tuluá, Valle del Cauca', 4.07773, -76.19624),
 	(18, 'Bomba de gasolina', NULL, 'Tv. 12, Tuluá, Valle del Cauca', 4.0949993, -76.2030714),
-	(19, 'Terpel San Cristobal', NULL, 'Cl. 28, Tuluá, Valle del Cauca', 4.0816745, -76.1956939);
+	(20, 'Terpel San Cristobal', NULL, 'Cl. 28, Tuluá, Valle del Cauca', 4.0816745, -76.1956939);
 /*!40000 ALTER TABLE `estaciones` ENABLE KEYS */;
+
+-- Dumping structure for table data.usuarios
+DROP TABLE IF EXISTS `usuarios`;
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `numero_documento` int(11) NOT NULL,
+  `tipo_documento` varchar(50) NOT NULL,
+  `sexo` varchar(50) DEFAULT NULL,
+  `nacionalidad` varchar(50) NOT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `direccion_residencia` varchar(50) DEFAULT NULL,
+  `contrasena` blob NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table data.usuarios: ~0 rows (approximately)
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
