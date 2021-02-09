@@ -27,20 +27,41 @@ app.get("/", function(req, res){
   });
 });
 
-//Ruta para insertar usuarios en la BD
-app.get("/user", function(req, res){
-  const sql = "select * from usuarios where id="+req.body.id
-  
+//Ruta para consultar usuarios en la BD
+app.post("/login", function(req, res){
+  console.log(req.body);
+  const sql = "select * from usuarios where numero_documento=" + req.body.numero_documento;
   connection.query(sql,(error, results)=>{
     if(error){
       console.error('error : ' + error.stack);
+      res.send('error');
     }
-
     if(results.length > 0){
-      res.json(results);
+      res.send("Exito")
+      //res.json(results);
     }
     else{
-      res.send('No hay resultados');
+      res.send('No existe');
+    }
+  });
+});
+
+
+//Ruta para consultar usuarios en la BD
+app.get("/user", function(req, res){
+  console.log(req.query);
+  const sql = "select * from usuarios where numero_documento=" + req.body.numero_documento;
+  connection.query(sql,(error, results)=>{
+    if(error){
+      console.error('error : ' + error.stack);
+      res.send('error');
+    }
+    if(results.length > 0){
+      res.send("Exito")
+      //res.json(results);
+    }
+    else{
+      res.send('No existe');
     }
   });
 });
@@ -48,30 +69,35 @@ app.get("/user", function(req, res){
 
 //Ruta para insertar usuarios en la BD
 app.post("/user", function(req, res){
+  console.log(req.body);
+  //Encriptacion de contraseña 
+  //const salt = bcrypt.genSaltSync(saltRounds);
+  //const hash = bcrypt.hashSync(req.body.contrasena, salt);
+    
+  const sql = 'insert into usuarios (nombre, numero_documento, tipo_documento, sexo, nacionalidad,telefono,direccion_residencia,contrasena) values ?'
 
-//Encriptacion de contraseña 
-const salt = bcrypt.genSaltSync(saltRounds);
-const hash = bcrypt.hashSync(req.body.contrasena, salt);
-  
-const sql = 'insert into usuarios (nombre, numero_documento, tipo_documento, sexo, nacionalidad,telefono,direccion_residencia,contrasena) values ?'
+  var values = [
+    [req.body.nombre, req.body.numero_documento, req.body.tipo_documento, req.body.sexo, req.body.nacionalidad, req.body.telefono, req.body.direccion_residencia, "hash"]
+  ]
 
-var values = [
-  [req.body.nombre, req.body.numero_documento, req.body.tipo_documento, req.body.sexo, req.body.nacionalidad, req.body.telefono, req.body.direccion_residencia, hash]
-]
 
-connection.query(sql,[values],(error, results)=>{
-  if (error) throw error;
-  console.log("Number of records inserted: " + results.affectedRows);
+  connection.query(sql,[values],(error, results)=>{
 
-});
+    if (error) {
+      throw error;
+      res.send("Error");
+    };
+    res.send("Exito");
 
+    console.log("Number of records inserted: " + results.affectedRows);
+
+  });
 })
 
 
 
 //Ruta para editar usuario
 app.put('/user', function (req, res) {
-  
   //const sql = "update usuarios set nombre=?, numero_documento=?, tipo_documento=?, sexo=?, nacionalidad=?,telefono=?,direccion_residencia=? where id =?"
   const sql = "update usuarios set nombre='"+req.body.nombre+
   "',numero_documento='"+ req.body.numero_documento+
@@ -105,14 +131,17 @@ app.delete('/user', function (req, res) {
 
 //Ruta para insertar estaciones en la BD
 app.post("/station", function(req, res){
-  const sql = 'insert into estaciones (nombre, numero_documento, tipo_documento, sexo, nacionalidad,telefono,direccion_residencia,contrasena) values ?'
+  const sql = 'insert into estaciones (nombre, telefono, direccion, latitud, longitud) values ?'
   var values = [
-    [req.body.nombre, 11, "req.body.name", "req.body.name", "req.body.name", 11, "req.body.name", "req.body.name",]
+    [req.body.nombre, req.body.telefono, req.body.direccion, req.body.latitud, req.body.longitud]
   ]
   connection.query(sql,[values],(error, results)=>{
-    if (error) throw error;
+    if (error){
+      res.send(error);
+      throw error;      
+    }
+    res.send("Exito");
     console.log("Number of records inserted: " + results.affectedRows);
-
   });
 });
 
