@@ -6,6 +6,22 @@ var cors = require('cors')
 const bcrypt = require('bcrypt');
 
 
+//_________________________________
+//Socket
+const http = require("http");/////////////////
+const socketIo = require("socket.io")
+
+const server = http.createServer();
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3002",
+    credentials: true
+  }
+});
+const port = process.env.PORT || 3001;
+server.listen(port, () => console.log(`Listening on port ${port}`));
+//_________________________________
+
 app.use(cors())
 app.use(bodyParser.json());
 const saltRounds = 10;
@@ -71,13 +87,13 @@ app.get("/user", function(req, res){
 app.post("/user", function(req, res){
   console.log(req.body);
   //Encriptacion de contraseña 
-  //const salt = bcrypt.genSaltSync(saltRounds);
-  //const hash = bcrypt.hashSync(req.body.contrasena, salt);
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(req.body.contrasena, salt);
     
   const sql = 'insert into usuarios (nombre, numero_documento, tipo_documento, sexo, nacionalidad,telefono,direccion_residencia,contrasena) values ?'
 
   var values = [
-    [req.body.nombre, req.body.numero_documento, req.body.tipo_documento, req.body.sexo, req.body.nacionalidad, req.body.telefono, req.body.direccion_residencia, "hash"]
+    [req.body.nombre, req.body.numero_documento, req.body.tipo_documento, req.body.sexo, req.body.nacionalidad, req.body.telefono, req.body.direccion_residencia, hash]
   ]
 
 
@@ -141,6 +157,9 @@ app.post("/station", function(req, res){
       throw error;      
     }
     res.send("Exito");
+    //__________________________________________________
+    io.emit('Nueva Estacion', req.body);
+    //__________________________________________________
     console.log("Number of records inserted: " + results.affectedRows);
   });
 });
@@ -166,3 +185,4 @@ connection.connect(function(err) {
 });
   
 app.listen(3000,()=>console.log('Servidor corriendo'));
+
