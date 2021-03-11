@@ -169,9 +169,9 @@ app.post("/station", function(req, res){
 // create the connection to database
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
+    user: 'jv0498',
     database: 'data',
-    password: '',
+    password: 'kGQiTs5D8tEzXpmR'
   });
 
 
